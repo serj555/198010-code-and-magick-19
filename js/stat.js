@@ -1,4 +1,5 @@
 'use strict';
+
 var CLOUD_WIDTH = 420;
 var CLOUD_HEIGHT = 270;
 var CLOUD_X = 100;
@@ -24,8 +25,8 @@ var renderCloud = function (ctx, x, y, color) {
 };
 
 // создаем функцию для нахождения максимального числа в массиве
-var getMaxElement = function (numArray) {
-  return Math.max.apply(null, numArray);
+var getMaxElement = function (numbers) {
+  return Math.max.apply(null, numbers);
 };
 
 // создаем функцию для вычисления рандомного значения насыщенности для цвета
@@ -40,7 +41,7 @@ window.renderStatistics = function (ctx, names, times) {
   // рисуем облако
   renderCloud(ctx, CLOUD_X, CLOUD_Y, CLOUD_COLOR);
 
-  // текст заголовка результатов
+  // текст заголовка окна
   var indentHeadingX = CLOUD_X + BAR_INDENT;
   var indentHeadingY = CLOUD_Y + FONT_GAP;
 
@@ -53,7 +54,8 @@ window.renderStatistics = function (ctx, names, times) {
   //  рисуем гистограммы (результаты игроков)
   var maxTime = getMaxElement(times); // определяем максимальное значение по времени среди игроков
 
-  names.forEach(function renderGistogramm(player, i) {
+  // функция отображения гистограмм
+  var renderHistogram = function (player, i) {
     var currentPlayerTime = Math.round(times[i]);
     var startPointX = CLOUD_X + BAR_INDENT + (BAR_WIDTH + BAR_INDENT) * i;
     var startPointY = CLOUD_HEIGHT - FONT_GAP;
@@ -65,14 +67,13 @@ window.renderStatistics = function (ctx, names, times) {
     ctx.fillText(currentPlayerTime.toString(), startPointX, startPointY - BAR_GAP_Y - currentHeightBar - FONT_GAP); // указываем числовой результат игрока над его гистограммой
 
     // определяем цвет гистограммы для пользователя и других игроков
-    if (player === 'Вы') {
-      ctx.fillStyle = BAR_PLAYER_COLOR; // цвет гистограммы для пользователя
-    } else {
-      ctx.fillStyle = getRandomSaturationColor(BAR_MAIN_COLOR); // цвет гистограммы для соперников
-    }
+    ctx.fillStyle = (player === 'Вы') ? BAR_PLAYER_COLOR : getRandomSaturationColor(BAR_MAIN_COLOR);
 
     // отрисовываем гистораммы, высота зависит от результатов игроков
     ctx.fillRect(startPointX, startPointY - BAR_GAP_Y, BAR_WIDTH, -currentHeightBar);
-  });
+  };
+
+  // выводим на экран результаты игроков из массива имен
+  names.forEach(renderHistogram);
 
 };
