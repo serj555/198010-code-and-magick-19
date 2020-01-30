@@ -1,3 +1,4 @@
+// Файл stat.js
 'use strict';
 
 var GAP = 10;
