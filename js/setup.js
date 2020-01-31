@@ -10,19 +10,16 @@ var SIMILAR_LIST_ELEMENT = document.querySelector('.setup-similar-list');
 var SIMILAR_WIZARD_TEMPLATE = document.querySelector('#similar-wizard-template')
   .content
   .querySelector('.setup-similar-item');
+var SETUP_WINDOW = '.setup';
+var SIMILAR_WINDOW = '.setup-similar';
 
-// функция отображения окна с персонажами
-var showWindow = function () {
-  document.querySelector('.setup').classList.remove('hidden');
-};
-
-// функция отображения списка похожих персонажей
-var showWizards = function () {
-  document.querySelector('.setup-similar').classList.remove('hidden');
+// функция отображения скрытого элемента
+var showWindow = function (element) {
+  document.querySelector(element).classList.remove('hidden');
 };
 
 // функция получения значения из рандомного елемента массива
-var getRandomData = function (array) {
+var getRandomElement = function (array) {
   return array[Math.floor(Math.random() * (array.length - 1))];
 };
 
@@ -32,9 +29,9 @@ var createNewWizards = function () {
 
   for (var i = 0; i < QUANTITY_WIZARDS; i++) {
     wizards.push({
-      name: getRandomData(WIZARD_NAMES) + ' ' + getRandomData(WIZARD_SURNAMES),
-      coatColor: getRandomData(WIZARD_COAT_COLOR),
-      eyesColor: getRandomData(WIZARD_EYES_COLOR)
+      name: getRandomElement(WIZARD_NAMES) + ' ' + getRandomElement(WIZARD_SURNAMES),
+      coatColor: getRandomElement(WIZARD_COAT_COLOR),
+      eyesColor: getRandomElement(WIZARD_EYES_COLOR)
     });
   }
 
@@ -57,9 +54,9 @@ var renderWizards = function () {
   var wizards = createNewWizards();
   var fragment = document.createDocumentFragment();
 
-  for (var i = 0; i < QUANTITY_WIZARDS; i++) {
-    fragment.appendChild(renderWizard(wizards[i]));
-  }
+  wizards.forEach(function (wizard) {
+    fragment.appendChild(renderWizard(wizard));
+  });
 
   return fragment;
 };
@@ -69,6 +66,6 @@ var appendWizards = function () {
   SIMILAR_LIST_ELEMENT.appendChild(renderWizards());
 };
 
-showWindow();
+showWindow(SETUP_WINDOW);
 appendWizards();
-showWizards();
+showWindow(SIMILAR_WINDOW);
