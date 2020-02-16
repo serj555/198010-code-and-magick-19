@@ -3,11 +3,12 @@
 
 (function () {
   var Nodes = {
-    SETUP_WINDOW: document.querySelector('.setup'),
-    SETUP_OPEN: document.querySelector('.setup-open'),
-    SETUP_CLOSE: document.querySelector('.setup-close'),
-    SETUP_USER_NAME: document.querySelector('.setup-user-name'),
-    SETUP_WIZARD_APPEARANCE: document.querySelector('.setup-wizard-appearance'),
+    POPUP_WINDOW: document.querySelector('.setup'),
+    POPUP_OPEN: document.querySelector('.setup-open'),
+    POPUP_CLOSE: document.querySelector('.setup-close'),
+    POPUP_USER_NAME: document.querySelector('.setup-user-name'),
+    POPUP_USER_AVATAR: document.querySelector('.upload'),
+    POPUP_WIZARD_APPEARANCE: document.querySelector('.setup-wizard-appearance'),
     WIZARD_COAT: document.querySelector('.setup-wizard .wizard-coat'),
     WIZARD_EYES: document.querySelector('.setup-wizard .wizard-eyes'),
     WIZARD_FIREBALL: document.querySelector('.setup-fireball-wrap')
@@ -25,14 +26,14 @@
   var onWizardCoatColor = function () {
     var coatColor = window.util.getRandomElement(window.wizard.COAT_COLOR);
     Nodes.WIZARD_COAT.style.fill = coatColor;
-    Nodes.SETUP_WIZARD_APPEARANCE.querySelector('input[name="coat-color"]').value = coatColor;
+    Nodes.POPUP_WIZARD_APPEARANCE.querySelector('input[name="coat-color"]').value = coatColor;
   };
 
   // случайный выбор цвета глаз волшебника
   var onWizardEyesColor = function () {
     var eyesColor = window.util.getRandomElement(window.wizard.EYES_COLOR);
     Nodes.WIZARD_EYES.style.fill = eyesColor;
-    Nodes.SETUP_WIZARD_APPEARANCE.querySelector('input[name="eyes-color"]').value = eyesColor;
+    Nodes.POPUP_WIZARD_APPEARANCE.querySelector('input[name="eyes-color"]').value = eyesColor;
   };
 
   // случайный выбор цвета файрбола волшебника
@@ -52,12 +53,12 @@
 
   // функция отображения скрытого элемента
   var showElement = function () {
-    Nodes.SETUP_WINDOW.classList.remove('hidden');
+    Nodes.POPUP_WINDOW.classList.remove('hidden');
   };
 
   // функция скрытия элемента
   var hideElement = function () {
-    Nodes.SETUP_WINDOW.classList.add('hidden');
+    Nodes.POPUP_WINDOW.classList.add('hidden');
   };
 
   // закрытие окна при нажатии Esc
@@ -71,8 +72,8 @@
   var openPopup = function () {
     showElement();
     document.addEventListener('keydown', onPopupEscPress);
-    Nodes.SETUP_USER_NAME.addEventListener('focus', onFocusInput);
-    Nodes.SETUP_USER_NAME.addEventListener('blur', onBlurInput);
+    Nodes.POPUP_USER_NAME.addEventListener('focus', onFocusInput);
+    Nodes.POPUP_USER_NAME.addEventListener('blur', onBlurInput);
     Nodes.WIZARD_COAT.addEventListener('click', onWizardCoatColor);
     Nodes.WIZARD_EYES.addEventListener('click', onWizardEyesColor);
     Nodes.WIZARD_FIREBALL.addEventListener('click', onWizardFireballColor);
@@ -82,27 +83,27 @@
   var closePopup = function () {
     hideElement();
     document.removeEventListener('keydown', onPopupEscPress);
-    Nodes.SETUP_USER_NAME.removeEventListener('focus', onFocusInput);
-    Nodes.SETUP_USER_NAME.removeEventListener('blur', onBlurInput);
+    Nodes.POPUP_USER_NAME.removeEventListener('focus', onFocusInput);
+    Nodes.POPUP_USER_NAME.removeEventListener('blur', onBlurInput);
     Nodes.WIZARD_COAT.removeEventListener('click', onWizardCoatColor);
     Nodes.WIZARD_EYES.removeEventListener('click', onWizardEyesColor);
     Nodes.WIZARD_FIREBALL.removeEventListener('click', onWizardFireballColor);
   };
 
   // События
-  Nodes.SETUP_OPEN.addEventListener('click', function () {
+  Nodes.POPUP_OPEN.addEventListener('click', function () {
     openPopup();
   });
 
-  Nodes.SETUP_OPEN.addEventListener('keydown', function (evt) {
+  Nodes.POPUP_OPEN.addEventListener('keydown', function (evt) {
     window.util.isEnterEvent(evt, openPopup);
   });
 
-  Nodes.SETUP_CLOSE.addEventListener('click', function () {
+  Nodes.POPUP_CLOSE.addEventListener('click', function () {
     closePopup();
   });
 
-  Nodes.SETUP_CLOSE.addEventListener('keydown', function (evt) {
+  Nodes.POPUP_CLOSE.addEventListener('keydown', function (evt) {
     window.util.isEnterEvent(evt, closePopup);
   });
 

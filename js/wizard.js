@@ -3,7 +3,7 @@
 (function () {
   var Nodes = {
     SIMILAR_LIST_ELEMENT: document.querySelector('.setup-similar-list'),
-    SIMILAR_WIZARD_TEMPLATE: document.querySelector('#similar-wizard-template')
+    SIMILAR_TEMPLATE: document.querySelector('#similar-wizard-template')
       .content
       .querySelector('.setup-similar-item'),
     SIMILAR_WINDOW: document.querySelector('.setup-similar'),
@@ -62,12 +62,12 @@
   };
 
   // функция создания волшебника с использованием шаблона
-  var renderNew = function (wizard) {
-    var wizardElement = Nodes.SIMILAR_WIZARD_TEMPLATE.cloneNode(true);
+  var renderNew = function (element) {
+    var wizardElement = Nodes.SIMILAR_TEMPLATE.cloneNode(true);
 
-    wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
+    wizardElement.querySelector('.setup-similar-label').textContent = element.name;
+    wizardElement.querySelector('.wizard-coat').style.fill = element.coatColor;
+    wizardElement.querySelector('.wizard-eyes').style.fill = element.eyesColor;
 
     return wizardElement;
   };
