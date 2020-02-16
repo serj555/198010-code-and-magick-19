@@ -4,11 +4,11 @@
 (function () {
   var POPUP_WINDOW = document.querySelector('.setup');
   var POPUP_USER_AVATAR = document.querySelector('.upload');
-  var dragged = false;
 
   POPUP_USER_AVATAR.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
+    var dragged = false;
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
