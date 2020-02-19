@@ -22,6 +22,20 @@
   ];
   var statFocusInput = false;
 
+  // определение положения элемента
+  var popupCoords = {};
+  var getPositionPopup = function () {
+    popupCoords = {
+      x: Nodes.POPUP_WINDOW.offsetLeft,
+      y: Nodes.POPUP_WINDOW.offsetTop
+    };
+  };
+
+  var setPositionPopup = function () {
+    Nodes.POPUP_WINDOW.style.left = popupCoords.x + 'px';
+    Nodes.POPUP_WINDOW.style.top = popupCoords.y + 'px';
+  };
+
   // случайный выбор цвета мантии волшебника
   var onWizardCoatColor = function () {
     var coatColor = window.util.getRandomElement(window.wizard.COAT_COLOR);
@@ -61,16 +75,10 @@
     Nodes.POPUP_WINDOW.classList.add('hidden');
   };
 
-  // закрытие окна при нажатии Esc
-  var onPopupEscPress = function (evt) {
-    if (!statFocusInput) {
-      window.util.isEscEvent(evt, hideElement);
-    }
-  };
-
   // функция открытия окна
   var openPopup = function () {
     showElement();
+    getPositionPopup();
     document.addEventListener('keydown', onPopupEscPress);
     Nodes.POPUP_USER_NAME.addEventListener('focus', onFocusInput);
     Nodes.POPUP_USER_NAME.addEventListener('blur', onBlurInput);
@@ -82,12 +90,20 @@
   // функция закрытия окна
   var closePopup = function () {
     hideElement();
+    setPositionPopup();
     document.removeEventListener('keydown', onPopupEscPress);
     Nodes.POPUP_USER_NAME.removeEventListener('focus', onFocusInput);
     Nodes.POPUP_USER_NAME.removeEventListener('blur', onBlurInput);
     Nodes.WIZARD_COAT.removeEventListener('click', onWizardCoatColor);
     Nodes.WIZARD_EYES.removeEventListener('click', onWizardEyesColor);
     Nodes.WIZARD_FIREBALL.removeEventListener('click', onWizardFireballColor);
+  };
+
+  // закрытие окна при нажатии Esc
+  var onPopupEscPress = function (evt) {
+    if (!statFocusInput) {
+      window.util.isEscEvent(evt, closePopup);
+    }
   };
 
   // События
