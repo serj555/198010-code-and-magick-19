@@ -8,8 +8,6 @@
       .querySelector('.setup-similar-item'),
     SIMILAR_WINDOW: document.querySelector('.setup-similar'),
   };
-
-  var QUANTITY = 4;
   var NAMES = [
     'Иван',
     'Хуан Себастьян',
@@ -45,12 +43,13 @@
     'yellow',
     'green',
   ];
+  var QUANTITY = 4;
 
   // функция создания массива с количеством 'number' объектов с рандомными данными
-  var createNewOnes = function () {
+  var createWizards = function (number) {
     var wizards = [];
 
-    for (var i = 0; i < QUANTITY; i++) {
+    for (var i = 0; i < number; i++) {
       wizards.push({
         name: window.util.getRandomElement(NAMES) + ' ' + window.util.getRandomElement(SURNAMES),
         coatColor: window.util.getRandomElement(COAT_COLOR),
@@ -62,7 +61,7 @@
   };
 
   // функция создания волшебника с использованием шаблона
-  var renderNew = function (element) {
+  var renderWizard = function (element) {
     var wizardElement = Nodes.SIMILAR_TEMPLATE.cloneNode(true);
 
     wizardElement.querySelector('.setup-similar-label').textContent = element.name;
@@ -73,12 +72,11 @@
   };
 
   // функция заполнения фрагмента DOM-элементами
-  var renderNewOnes = function () {
-    var wizards = createNewOnes();
+  var renderWizards = function (wizards) {
     var fragment = document.createDocumentFragment();
 
     wizards.forEach(function (wizard) {
-      fragment.appendChild(renderNew(wizard));
+      fragment.appendChild(renderWizard(wizard));
     });
 
     return fragment;
@@ -86,7 +84,7 @@
 
   // вставка заполненного фрагмента в DOM
   var append = function () {
-    Nodes.SIMILAR_LIST_ELEMENT.appendChild(renderNewOnes());
+    Nodes.SIMILAR_LIST_ELEMENT.appendChild(renderWizards(createWizards(QUANTITY)));
     Nodes.SIMILAR_WINDOW.classList.remove('hidden');
   };
 

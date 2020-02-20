@@ -28,8 +28,7 @@
         y: moveEvt.clientY
       };
 
-      POPUP_WINDOW.style.left = (POPUP_WINDOW.offsetLeft - shift.x) + 'px';
-      POPUP_WINDOW.style.top = (POPUP_WINDOW.offsetTop - shift.y) + 'px';
+      window.util.changeCoordElement(POPUP_WINDOW, shift.x, shift.y);
     };
 
     var onMouseUp = function (upEvt) {
