@@ -8,6 +8,7 @@
     POPUP_CLOSE: document.querySelector('.setup-close'),
     POPUP_USER_NAME: document.querySelector('.setup-user-name'),
     POPUP_USER_AVATAR: document.querySelector('.upload'),
+    SIMILAR_WINDOW: document.querySelector('.setup-similar'),
   };
 
   var statFocusInput = false;
@@ -54,6 +55,12 @@
     }
   };
 
+  // вставка заполненного фрагмента в DOM
+  var insertWizards = function () {
+    window.wizard.render();
+    Nodes.SIMILAR_WINDOW.classList.remove('hidden');
+  };
+
   // События
   Nodes.POPUP_OPEN.addEventListener('click', function () {
     openPopup();
@@ -71,5 +78,5 @@
     window.util.isEnterEvent(evt, closePopup);
   });
 
-  window.wizard.append();
+  insertWizards();
 })();

@@ -6,7 +6,7 @@
     SIMILAR_TEMPLATE: document.querySelector('#similar-wizard-template')
       .content
       .querySelector('.setup-similar-item'),
-    SIMILAR_WINDOW: document.querySelector('.setup-similar'),
+    ERROR_MESSAGE: document.querySelector('.errorMessage')
   };
   /*
   var NAMES = [
@@ -65,7 +65,7 @@
   */
 
   // функция создания волшебника с использованием шаблона
-  var renderWizard = function (element) {
+  var createWizard = function (element) {
     var wizardElement = Nodes.SIMILAR_TEMPLATE.cloneNode(true);
 
     wizardElement.querySelector('.setup-similar-label').textContent = element.name;
@@ -84,47 +84,27 @@
     });
     */
 
-  var onSaccess = function (wizards) {
+  var onSuccess = function (wizards) {
     var fragment = document.createDocumentFragment();
-    var node = document.querySelector('.errorMessage');
 
-    if (node) {
-      document.body.removeChild(node);
+    if (Nodes.ERROR_MESSAGE) {
+      document.body.removeChild(Nodes.ERROR_MESSAGE);
     }
 
     for (var i = 0; i < QUANTITY; i++) {
-      fragment.appendChild(renderWizard(window.util.getRandomElement(wizards)));
+      fragment.appendChild(createWizard(window.util.getRandomElement(wizards)));
     }
 
     Nodes.SIMILAR_LIST_ELEMENT.appendChild(fragment);
   };
 
-  var onError = function (errorMessage) {
-    var node = document.createElement('div');
-    node.classList.add('errorMessage');
-    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-    node.style.position = 'absolute';
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fonsize = '30px';
-
-    node.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', node);
-  };
-
   var renderWizards = function () {
-    window.backend.load(onSaccess, onError);
-  };
-
-  // вставка заполненного фрагмента в DOM
-  var append = function () {
-    renderWizards();
-    Nodes.SIMILAR_WINDOW.classList.remove('hidden');
+    window.backend.load(onSuccess, window.util.onErrorLoad);
   };
 
   window.wizard = {
     COAT_COLOR: COAT_COLOR,
     EYES_COLOR: EYES_COLOR,
-    append: append,
+    render: renderWizards
   };
 })();

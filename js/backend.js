@@ -2,60 +2,50 @@
 
 (function () {
   var Url = {
-    UPLOAD: 'https://js.dump.academy/code-and-magick',
+    SAVE: 'https://js.dump.academy/code-and-magick',
     LOAD: 'https://js.dump.academy/code-and-magick/data'
+  };
+  var Method = {
+    GET: 'GET',
+    POST: 'POST'
   };
   var StatusCode = {
     OK: 200,
   };
   var TIMEOUT_IN_MS = 10000;
 
-  var load = function (onLoad, onError) {
+  var sendRequest = function (method, url, onLoad, onError, data) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
-    xhr.addEventListener('load', function () {
+    var onLoadData = function () {
       if (xhr.status === StatusCode.OK) {
         onLoad(xhr.response);
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
-    });
-    xhr.addEventListener('error', function () {
+    };
+
+    var onErrorLoad = function () {
       onError('Произошла ошибка соединения');
-    });
-    xhr.addEventListener('timeout', function () {
+    };
+
+    var onTimeOutLoad = function () {
       onError('Запрос не успел выполнится за ' + xhr.timeout + 'мс. Попробуйте повторить');
-    });
+    };
+
+    xhr.addEventListener('load', onLoadData);
+    xhr.addEventListener('error', onErrorLoad);
+    xhr.addEventListener('timeout', onTimeOutLoad);
 
     xhr.timeout = TIMEOUT_IN_MS;
 
-    xhr.open('GET', Url.LOAD);
-    xhr.send();
-  };
-
-  var save = function (data, onLoad, onError) {
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
-
-    xhr.addEventListener('load', function () {
-      onLoad(xhr.response);
-    });
-    xhr.addEventListener('error', function () {
-      onError('Произошла ошибка соединения');
-    });
-    xhr.addEventListener('timeout', function () {
-      onError('Запрос не успел выполнится за ' + xhr.timeout + 'мс. Попробуйте повторить');
-    });
-
-    xhr.timeout = TIMEOUT_IN_MS;
-
-    xhr.open('POST', Url.UPLOAD);
+    xhr.open(method, url);
     xhr.send(data);
   };
 
   window.backend = {
-    load: load,
-    save: save,
+    load: sendRequest.bind(undefined, Method.GET, Url.LOAD),
+    save: sendRequest.bind(undefined, Method.POST, Url.SAVE),
   };
 })();
