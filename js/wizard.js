@@ -6,8 +6,9 @@
     SIMILAR_TEMPLATE: document.querySelector('#similar-wizard-template')
       .content
       .querySelector('.setup-similar-item'),
-    SIMILAR_WINDOW: document.querySelector('.setup-similar'),
+    ERROR_MESSAGE: document.querySelector('.errorMessage')
   };
+  /*
   var NAMES = [
     'Иван',
     'Хуан Себастьян',
@@ -28,6 +29,7 @@
     'Нионго',
     'Ирвинг',
   ];
+  */
   var COAT_COLOR = [
     'rgb(101, 137, 164)',
     'rgb(241, 43, 107)',
@@ -46,6 +48,7 @@
   var QUANTITY = 4;
 
   // функция создания массива с количеством 'number' объектов с рандомными данными
+  /*
   var createWizards = function (number) {
     var wizards = [];
 
@@ -59,38 +62,49 @@
 
     return wizards;
   };
+  */
 
   // функция создания волшебника с использованием шаблона
-  var renderWizard = function (element) {
+  var createWizard = function (element) {
     var wizardElement = Nodes.SIMILAR_TEMPLATE.cloneNode(true);
 
     wizardElement.querySelector('.setup-similar-label').textContent = element.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = element.coatColor;
-    wizardElement.querySelector('.wizard-eyes').style.fill = element.eyesColor;
+    wizardElement.querySelector('.wizard-coat').style.fill = element.colorCoat;
+    wizardElement.querySelector('.wizard-eyes').style.fill = element.colorEyes;
 
     return wizardElement;
   };
 
   // функция заполнения фрагмента DOM-элементами
-  var renderWizards = function (wizards) {
-    var fragment = document.createDocumentFragment();
+  /*
+  var fragment = document.createDocumentFragment();
 
     wizards.forEach(function (wizard) {
       fragment.appendChild(renderWizard(wizard));
     });
+    */
 
-    return fragment;
+  var onSuccess = function (wizards) {
+    var fragment = document.createDocumentFragment();
+
+    if (Nodes.ERROR_MESSAGE) {
+      document.body.removeChild(Nodes.ERROR_MESSAGE);
+    }
+
+    for (var i = 0; i < QUANTITY; i++) {
+      fragment.appendChild(createWizard(window.util.getRandomElement(wizards)));
+    }
+
+    Nodes.SIMILAR_LIST_ELEMENT.appendChild(fragment);
   };
 
-  // вставка заполненного фрагмента в DOM
-  var append = function () {
-    Nodes.SIMILAR_LIST_ELEMENT.appendChild(renderWizards(createWizards(QUANTITY)));
-    Nodes.SIMILAR_WINDOW.classList.remove('hidden');
+  var renderWizards = function () {
+    window.backend.load(onSuccess, window.util.onErrorLoad);
   };
 
   window.wizard = {
     COAT_COLOR: COAT_COLOR,
     EYES_COLOR: EYES_COLOR,
-    append: append,
+    render: renderWizards
   };
 })();
